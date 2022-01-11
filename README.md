@@ -1,4 +1,4 @@
-# Skote - Vue based admin template
+# Vue Study 
 
 ## Project setup
 ```
