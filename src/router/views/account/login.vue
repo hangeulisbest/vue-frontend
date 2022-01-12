@@ -1,6 +1,6 @@
 <script>
 import Layout from "@/router/layouts/auth";
-import {registerUser} from "@/api/index";
+import {loginUser} from "@/api/index";
 import {
   notificationMethods,
 } from "@/state/helpers";
@@ -54,15 +54,21 @@ export default {
     ...notificationMethods,
     // Try to log the user in with the username
     // and password they provided.
-    tryToLogIn() {
+    async tryToLogIn() {
       this.submitted = true;
       // stop here if form is invalid
       this.$v.$touch();
 
       if (this.$v.$invalid) {
         return;
-      } else {
-        registerUser()
+      } 
+      else {
+        const userData = {
+          email: this.email,
+          password: this.password,
+        }
+        const response = await loginUser(userData);
+        console.log(response);
       }
     },
   },
