@@ -1,9 +1,6 @@
 <script>
-import axios from "axios";
-
+import {registerUser} from "@/api/index";
 import {
-  authMethods,
-  authFackMethods,
   notificationMethods,
 } from "@/state/helpers";
 import Layout from "../../layouts/auth";
@@ -63,65 +60,28 @@ export default {
     },
   },
   methods: {
-    ...authMethods,
-    ...authFackMethods,
     ...notificationMethods,
     // Try to register the user in with the email, username
     // and password they provided.
-    tryToRegisterIn() {
+    async tryToRegisterIn() {
       this.submitted = true;
       // stop here if form is invalid
       this.$v.$touch();
-
+      console.log("HELLO WORLD!");
       if (this.$v.$invalid) {
         return;
       } else {
-        if (process.env.VUE_APP_DEFAULT_AUTH === "firebase") {
-          this.tryingToRegister = true;
-          // Reset the regError if it existed.
-          this.regError = null;
-          return (
-            this.register({
-              email: this.user.email,
-              password: this.user.password,
-            })
-              // eslint-disable-next-line no-unused-vars
-              .then((token) => {
-                this.tryingToRegister = false;
-                this.isRegisterError = false;
-                this.registerSuccess = true;
-                if (this.registerSuccess) {
-                  this.$router.push(
-                    this.$route.query.redirectFrom || {
-                      name: "default",
-                    }
-                  );
-                }
-              })
-              .catch((error) => {
-                this.tryingToRegister = false;
-                this.regError = error ? error : "";
-                this.isRegisterError = true;
-              })
-          );
-        } else if (process.env.VUE_APP_DEFAULT_AUTH === "fakebackend") {
-          const { email, username, password } = this.user;
-          if (email && username && password) {
-            this.registeruser(this.user);
-          }
-        } else if (process.env.VUE_APP_DEFAULT_AUTH === "authapi") {
-          axios
-            .post("http://127.0.0.1:8000/api/register", {
-              username: this.user.username,
-              email: this.user.email,
-              password: this.user.password,
-            })
-            .then((res) => {
-              return res;
-            });
-        }
+        // response 에 data 가 있다면 data 를 바로 가져오도록 하는 문법
+        const { data } = await registerUser(this.user);
+        console.log(data);
+        this.initForm();
       }
     },
+    initForm(){
+      this.user.username='';
+      this.user.password='';
+      this.user.email='';
+    }
   },
 };
 </script>
@@ -135,8 +95,8 @@ export default {
             <div class="row">
               <div class="col-7">
                 <div class="text-primary p-4">
-                  <h5 class="text-primary">Free Register</h5>
-                  <p>Get your free Skote account now.</p>
+                  <h5 class="text-primary">초간단 회원가입</h5>
+                  <p>와인에 오신것을 환영합니다.</p>
                 </div>
               </div>
               <div class="col-5 align-self-end">

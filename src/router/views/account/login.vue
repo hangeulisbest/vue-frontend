@@ -1,10 +1,7 @@
 <script>
-import axios from "axios";
-
 import Layout from "@/router/layouts/auth";
+import {registerUser} from "@/api/index";
 import {
-  authMethods,
-  authFackMethods,
   notificationMethods,
 } from "@/state/helpers";
 import { mapState } from "vuex";
@@ -54,8 +51,6 @@ export default {
     },
   },
   methods: {
-    ...authMethods,
-    ...authFackMethods,
     ...notificationMethods,
     // Try to log the user in with the username
     // and password they provided.
@@ -64,62 +59,10 @@ export default {
       // stop here if form is invalid
       this.$v.$touch();
 
-      console.log("email.email");
-      console.log(this.$v.email.email);
-      console.log("email.required");
-      console.log(this.$v.email.required);
-      console.log("email.invalid");
-      console.log(this.$v.email.$invalid);
-
       if (this.$v.$invalid) {
         return;
       } else {
-        console.log("VueAPP ##### default auth 출력");
-        console.log(process.env.VUE_APP_DEFAULT_AUTH);
-        if (process.env.VUE_APP_DEFAULT_AUTH === "firebase") {
-          this.tryingToLogIn = true;
-          // Reset the authError if it existed.
-          this.authError = null;
-          return (
-            this.logIn({
-              email: this.email,
-              password: this.password,
-            })
-              // eslint-disable-next-line no-unused-vars
-              .then((token) => {
-                this.tryingToLogIn = false;
-                this.isAuthError = false;
-                // Redirect to the originally requested page, or to the home page
-                this.$router.push(
-                  this.$route.query.redirectFrom || {
-                    name: "default",
-                  }
-                );
-              })
-              .catch((error) => {
-                this.tryingToLogIn = false;
-                this.authError = error ? error : "";
-                this.isAuthError = true;
-              })
-          );
-        } else if (process.env.VUE_APP_DEFAULT_AUTH === "fakebackend") {
-          const { email, password } = this;
-          if (email && password) {
-            this.login({
-              email,
-              password,
-            });
-          }
-        } else if (process.env.VUE_APP_DEFAULT_AUTH === "authapi") {
-          axios
-            .post("http://127.0.0.1:8000/api/login", {
-              email: this.email,
-              password: this.password,
-            })
-            .then((res) => {
-              return res;
-            });
-        }
+        registerUser()
       }
     },
   },
