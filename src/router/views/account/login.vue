@@ -72,6 +72,7 @@ export default {
           const response = await loginUser(userData);
           console.log(response);
           this.isAuthError = false;
+          this.success('로그인에 성공하였습니다.');
         }catch(error){
           console.log(error.response.data);
           this.isAuthError = true;
