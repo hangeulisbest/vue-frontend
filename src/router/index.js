@@ -64,8 +64,12 @@ router.beforeEach((routeTo, routeFrom, next) => {
     const authpage = !publicPages.includes(routeTo.path);
     const loggeduser = localStorage.getItem('user');
 
+    /**
+     * 라우터로 이동하기전에 Auth Page와 로그인 되어있는지를 확인! 
+     */
     if (authpage && !loggeduser) {
-      return next('/login');
+      //return next('/login');
+      return next();
     }
 
     next();

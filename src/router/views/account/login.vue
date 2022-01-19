@@ -27,8 +27,8 @@ export default {
   },
   data() {
     return {
-      email: "admin@themesbrand.com",
-      password: "123456",
+      email: "wj100213@gmail.com",
+      password: "1234",
       submitted: false,
       authError: null,
       tryingToLogIn: false,
@@ -63,12 +63,22 @@ export default {
         return;
       } 
       else {
-        const userData = {
-          email: this.email,
-          password: this.password,
+
+        try{
+            const userData = {
+            email: this.email,
+            password: this.password,
+            }
+          const response = await loginUser(userData);
+          console.log(response);
+          this.isAuthError = false;
+        }catch(error){
+          console.log(error.response.data);
+          this.isAuthError = true;
+          this.authError = error.response.data.message;
         }
-        const response = await loginUser(userData);
-        console.log(response);
+
+      
       }
     },
   },
