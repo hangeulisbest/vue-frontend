@@ -3,7 +3,11 @@ import store from '@/state/store'
 export default [
   {
     path: '/',
-    redirect: 'login',
+    name: 'home',
+    meta: {
+      authRequired: false,
+    },
+    component: () => import('./views/home/homeMain')
   },
   {
     path: "/blog",
