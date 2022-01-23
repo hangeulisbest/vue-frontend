@@ -3,6 +3,7 @@ import Layout from "@/router/layouts/auth";
 import {loginUser} from "@/api/index";
 import {
   notificationMethods,
+  memberMethods,
 } from "@/state/helpers";
 import { mapState } from "vuex";
 
@@ -52,6 +53,7 @@ export default {
   },
   methods: {
     ...notificationMethods,
+    ...memberMethods,
     // Try to log the user in with the username
     // and password they provided.
     async tryToLogIn() {
@@ -72,7 +74,8 @@ export default {
           const response = await loginUser(userData);
           console.log(response);
           this.isAuthError = false;
-          this.success('로그인에 성공하였습니다.');
+          this.setMemberName(this.email);
+          this.$router.push({name : 'home'});
         }catch(error){
           console.log(error.response.data);
           this.isAuthError = true;

@@ -7,6 +7,7 @@ export const authComputed = {
   ...mapGetters('auth', ['loggedIn']),
 }
 
+
 export const layoutComputed = {
   ...mapState('layout', {
     layoutType: (state) => state.layoutType,
@@ -25,9 +26,18 @@ export const authFackMethods = mapActions('authfack', ['login', 'registeruser', 
 
 export const notificationMethods = mapActions('notification', ['success', 'error', 'clear'])
 
+export const memberComputed = {
+  ...mapState('member',{
+    memberName: (state) => state.memberName,
+  }),
+  ...mapGetters('member', ['isLoggedIn']),
+}
+
+export const memberMethods = mapActions('member',['setMemberName'])
+
 export const todoComputed = {
   ...mapState('todo', {
     todos: (state) => state.todos
-  })
+  }),
 }
 export const todoMethods = mapActions('todo', ['fetchTodos'])

@@ -5,6 +5,8 @@ import i18n from "../i18n";
 
 import simplebar from "simplebar-vue";
 
+import { memberComputed } from  "@/state/helpers";
+
 /**
  * Nav-bar Component
  */
@@ -48,6 +50,9 @@ export default {
       flag: null,
       value: null,
     };
+  },
+  computed: {
+    ...memberComputed,
   },
   components: { simplebar },
   mounted() {
@@ -633,16 +638,40 @@ export default {
           </div>
         </b-dropdown>
 
-        <b-dropdown right variant="black" toggle-class="header-item" menu-class="dropdown-menu-end">
+        <!--  로그인이 되어있지 않았을 경우  -->
+        <div class="dropdown d-none d-lg-inline-block ms-1" v-if="!isLoggedIn">
+          <button
+            type="button"
+            class="btn header-item noti-icon"
+            @click="$router.push('/login')"
+          >
+            <img
+              class="rounded-circle header-profile-user"
+              src="@/assets/images/users/basic-profile.png"
+              alt="Header Avatar"
+            />
+            <span class="d-none d-xl-inline-block ms-1">
+              <div>
+                로그인
+              </div>
+            </span>
+          </button>
+        </div>
+
+        <!-- 로그인 유저 보여주기   -->
+        <b-dropdown right variant="black" toggle-class="header-item" menu-class="dropdown-menu-end" v-if="isLoggedIn">
           <template v-slot:button-content>
             <img
               class="rounded-circle header-profile-user"
               src="@/assets/images/users/avatar-1.jpg"
               alt="Header Avatar"
             />
-            <span class="d-none d-xl-inline-block ms-1">{{
-              $t("navbar.dropdown.henry.text")
-            }}</span>
+
+            <span class="d-none d-xl-inline-block ms-1">
+              <div v-if="isLoggedIn">
+                {{ memberName }}
+              </div>
+            </span>
             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
           </template>
           <!-- item-->
@@ -651,19 +680,6 @@ export default {
               <i class="bx bx-user font-size-16 align-middle me-1"></i>
               {{ $t("navbar.dropdown.henry.list.profile") }}
             </router-link>
-          </b-dropdown-item>
-          <b-dropdown-item href="javascript: void(0);">
-            <i class="bx bx-wallet font-size-16 align-middle me-1"></i>
-            {{ $t("navbar.dropdown.henry.list.mywallet") }}
-          </b-dropdown-item>
-          <b-dropdown-item class="d-block" href="javascript: void(0);">
-            <span class="badge bg-success float-end">11</span>
-            <i class="bx bx-wrench font-size-16 align-middle me-1"></i>
-            {{ $t("navbar.dropdown.henry.list.settings") }}
-          </b-dropdown-item>
-          <b-dropdown-item href="javascript: void(0);">
-            <i class="bx bx-lock-open font-size-16 align-middle me-1"></i>
-            {{ $t("navbar.dropdown.henry.list.lockscreen") }}
           </b-dropdown-item>
           <b-dropdown-divider></b-dropdown-divider>
           <a
