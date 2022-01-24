@@ -33,7 +33,7 @@ export const memberComputed = {
   ...mapGetters('member', ['isLoggedIn']),
 }
 
-export const memberMethods = mapActions('member',['setMemberName'])
+export const memberMethods = mapActions('member',['setMemberName','clearMemberName'])
 
 export const todoComputed = {
   ...mapState('todo', {

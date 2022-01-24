@@ -82,16 +82,9 @@ export default [
     meta: {
       authRequired: true,
       beforeResolve(routeTo, routeFrom, next) {
-        if (process.env.VUE_APP_DEFAULT_AUTH === "firebase") {
-          store.dispatch('auth/logOut')
-        } else {
-          store.dispatch('authfack/logout')
-        }
-        const authRequiredOnPreviousRoute = routeFrom.matched.some(
-          (route) => route.push('/login')
-        )
+        store.commit('member/clearMemberName');
         // Navigate back to previous page, or home as a fallback
-        next(authRequiredOnPreviousRoute ? { name: 'default' } : { ...routeFrom })
+        next({name : 'home'});
       },
     },
   },

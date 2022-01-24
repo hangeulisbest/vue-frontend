@@ -15,4 +15,8 @@ function loginUser(userData){
     return instance.post('login/v1',userData);
 }
 
-export {registerUser , loginUser};
+function logout(){
+   return instance.get('/logout/v1');
+}
+
+export {registerUser , loginUser , logout };

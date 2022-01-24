@@ -6,6 +6,9 @@ export const mutations={
     setMemberName(state,memberName){
         state.memberName = memberName;
     },
+    clearMemberName(state){
+        state.memberName = null;
+    },
 }
 
 export const actions = {
