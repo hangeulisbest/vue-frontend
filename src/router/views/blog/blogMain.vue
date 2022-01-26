@@ -15,6 +15,7 @@ export default {
 }
 </script>
 
+<!-- 나중에 하드코딩 제거 해야함 -->
 <template>
     <Layout>
         <PageHeader :title="title" :items="items" />
